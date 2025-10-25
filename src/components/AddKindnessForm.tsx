@@ -26,6 +26,7 @@ const AddKindnessForm = ({
 }: AddKindnessFormProps) => {
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
+  const isComment = !!selectedNode; // Always comment mode if node is selected
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +34,10 @@ const AddKindnessForm = ({
       onSubmit({
         user: user.trim(),
         message: message.trim(),
-        linkedTo: selectedNode ? [selectedNode.id] : [],
-      });
+        linkedTo: [],
+        isComment: isComment,
+        nodeId: isComment && selectedNode ? selectedNode.id : undefined,
+      } as any);
       setUser('');
       setMessage('');
     }
@@ -61,11 +64,13 @@ const AddKindnessForm = ({
           <div className='mb-4 md:mb-6'>
             <h2 className='flex items-center gap-2 text-lg md:text-2xl font-bold mb-2 neon-pink orbitron uppercase'>
               <Heart className='w-5 h-5 md:w-6 md:h-6' />
-              SHARE KINDNESS
+              {isComment ? 'ADD COMMENT' : 'SHARE KINDNESS'}
             </h2>
             <p className='text-xs md:text-sm neon-cyan orbitron'>
               {selectedNode
-                ? `// EXTENDING CHAIN FROM: ${selectedNode.user.toUpperCase()}`
+                ? isComment
+                  ? `// COMMENT ON: ${selectedNode.user.toUpperCase()}`
+                  : `// EXTENDING CHAIN FROM: ${selectedNode.user.toUpperCase()}`
                 : '// INITIALIZE NEW KINDNESS.CHAIN'}
             </p>
           </div>
@@ -84,7 +89,7 @@ const AddKindnessForm = ({
                 <div className='flex items-center gap-2 mb-2'>
                   <Sparkles className='w-3 h-3 md:w-4 md:h-4 neon-lime' />
                   <span className='text-xs md:text-sm font-bold orbitron neon-lime'>
-                    [LINKING TO:]
+                    {isComment ? '[COMMENT ON:]' : '[LINKING TO:]'}
                   </span>
                 </div>
                 <p className='text-xs md:text-sm dos-text pl-4'>
@@ -115,21 +120,27 @@ const AddKindnessForm = ({
               <Label
                 htmlFor='message'
                 className='text-xs md:text-sm neon-cyan orbitron uppercase'>
-                &gt; KIND.ACTION
+                &gt; {isComment ? 'COMMENT.TEXT' : 'KIND.ACTION'}
               </Label>
               <Textarea
                 id='message'
-                placeholder='DESCRIBE.YOUR.KIND.ACT...'
+                placeholder={
+                  isComment
+                    ? 'ENTER.YOUR.COMMENT...'
+                    : 'DESCRIBE.YOUR.KIND.ACT...'
+                }
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required
                 rows={4}
                 className='resize-none bg-black/50 neon-border-pink text-white font-mono placeholder:text-gray-500 placeholder:text-xs md:placeholder:text-sm'
               />
-              <p className='text-xs dos-text opacity-70'>
-                // EXAMPLES: "DONATED.TO.SHELTER" "HELPED.NEIGHBOR"
-                "VOLUNTEERED.AT.CENTER"
-              </p>
+              {!isComment && (
+                <p className='text-xs dos-text opacity-70'>
+                  // EXAMPLES: "DONATED.TO.SHELTER" "HELPED.NEIGHBOR"
+                  "VOLUNTEERED.AT.CENTER"
+                </p>
+              )}
             </div>
 
             {/* Buttons */}
@@ -139,7 +150,7 @@ const AddKindnessForm = ({
                 size='lg'
                 className='flex-1 neon-border-pink bg-[hsl(320,100%,60%)] hover:bg-[hsl(320,100%,70%)] text-black font-bold orbitron transition-all uppercase text-xs md:text-base'>
                 <Heart className='w-4 h-4' />
-                [ENTER] ADD TO GRID
+                {isComment ? '[ENTER] POST COMMENT' : '[ENTER] ADD TO GRID'}
               </Button>
               <Button
                 type='button'

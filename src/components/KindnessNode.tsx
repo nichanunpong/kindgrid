@@ -1,6 +1,13 @@
 import { Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+export interface Comment {
+  id: string;
+  user: string;
+  message: string;
+  timestamp: string;
+}
+
 export interface KindnessNodeData {
   id: string;
   user: string;
@@ -8,6 +15,7 @@ export interface KindnessNodeData {
   timestamp: string;
   linkedTo?: string[];
   color?: string;
+  comments?: Comment[];
 }
 
 interface KindnessNodeProps {
@@ -79,7 +87,7 @@ const KindnessNode = ({ node, position, onClick }: KindnessNodeProps) => {
       {/* Info card on hover - DOS style */}
       <div className='absolute top-full left-1/2 transform -translate-x-1/2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50'>
         <div
-          className='retro-box p-4 min-w-[200px] max-w-[280px]'
+          className='retro-box p-4 min-w-[250px] max-w-[320px] max-h-[400px] overflow-y-auto'
           style={{
             borderColor: nodeColor,
             boxShadow: `0 0 20px ${nodeColor}, inset 0 0 10px ${nodeColor}`,
@@ -96,7 +104,7 @@ const KindnessNode = ({ node, position, onClick }: KindnessNodeProps) => {
             </span>
           </div>
 
-          {/* Message */}
+          {/* Original Message */}
           <p
             className='text-xs leading-relaxed mb-2'
             style={{
@@ -106,6 +114,44 @@ const KindnessNode = ({ node, position, onClick }: KindnessNodeProps) => {
             }}>
             &gt; {node.message}
           </p>
+
+          {/* Comments Section */}
+          {node.comments && node.comments.length > 0 && (
+            <div
+              className='mt-3 pt-3 border-t-2'
+              style={{ borderColor: nodeColor }}>
+              <div
+                className='text-xs font-bold orbitron mb-2'
+                style={{ color: nodeColor }}>
+                [COMMENTS: {node.comments.length}]
+              </div>
+              <div className='space-y-2 max-h-[200px] overflow-y-auto'>
+                {node.comments.map((comment) => (
+                  <div
+                    key={comment.id}
+                    className='p-2 bg-black/30 border border-current'
+                    style={{ borderColor: nodeColor }}>
+                    <div className='flex items-center gap-2 mb-1'>
+                      <span
+                        className='text-xs font-bold orbitron'
+                        style={{ color: nodeColor }}>
+                        {comment.user}:
+                      </span>
+                    </div>
+                    <p
+                      className='text-xs'
+                      style={{
+                        fontFamily: 'VT323, monospace',
+                        color: 'hsl(180, 100%, 50%)',
+                        textShadow: '0 0 5px hsl(180, 100%, 50%)',
+                      }}>
+                      &gt; {comment.message}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Connection count */}
           {node.linkedTo && node.linkedTo.length > 0 && (

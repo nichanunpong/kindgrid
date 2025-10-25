@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Hero from '@/components/Hero';
 import KindnessGrid from '@/components/KindnessGrid';
 import AddKindnessForm from '@/components/AddKindnessForm';
+import NodeDetailsModal from '@/components/NodeDetailsModal';
 import StatsBar from '@/components/StatsBar';
 import { KindnessNodeData } from '@/components/KindnessNode';
 import { toast } from 'sonner';
@@ -14,6 +15,20 @@ const Index = () => {
       message: 'Donated winter coats to homeless shelter',
       timestamp: new Date().toISOString(),
       linkedTo: [],
+      comments: [
+        {
+          id: 'comment-1',
+          user: 'Alex',
+          message: 'This is so inspiring! Thank you!',
+          timestamp: new Date().toISOString(),
+        },
+        {
+          id: 'comment-2',
+          user: 'Jordan',
+          message: 'Just donated too, thanks for the idea!',
+          timestamp: new Date().toISOString(),
+        },
+      ],
     },
     {
       id: 'demo-2',
@@ -21,6 +36,7 @@ const Index = () => {
       message: 'Helped elderly neighbor with groceries',
       timestamp: new Date().toISOString(),
       linkedTo: ['demo-1'],
+      comments: [],
     },
     {
       id: 'demo-3',
@@ -28,38 +44,85 @@ const Index = () => {
       message: 'Volunteered at local animal shelter',
       timestamp: new Date().toISOString(),
       linkedTo: ['demo-1'],
+      comments: [
+        {
+          id: 'comment-3',
+          user: 'Taylor',
+          message: 'Animals need more people like you!',
+          timestamp: new Date().toISOString(),
+        },
+      ],
     },
   ]);
 
   const [showForm, setShowForm] = useState(false);
+  const [showNodeDetails, setShowNodeDetails] = useState(false);
   const [selectedNode, setSelectedNode] = useState<KindnessNodeData | null>(
     null
   );
 
   const handleAddKindness = (
-    kindness: Omit<KindnessNodeData, 'id' | 'timestamp'>
+    kindness: Omit<KindnessNodeData, 'id' | 'timestamp'> & {
+      isComment?: boolean;
+      nodeId?: string;
+    }
   ) => {
-    const newNode: KindnessNodeData = {
-      ...kindness,
-      id: `node-${Date.now()}`,
-      timestamp: new Date().toISOString(),
-    };
+    // Check if this is a comment
+    if (kindness.isComment && kindness.nodeId) {
+      // Add comment to existing node
+      setNodes((prev) =>
+        prev.map((node) => {
+          if (node.id === kindness.nodeId) {
+            return {
+              ...node,
+              comments: [
+                ...(node.comments || []),
+                {
+                  id: `comment-${Date.now()}`,
+                  user: kindness.user,
+                  message: kindness.message,
+                  timestamp: new Date().toISOString(),
+                },
+              ],
+            };
+          }
+          return node;
+        })
+      );
 
-    setNodes((prev) => [...prev, newNode]);
+      toast.success('Comment added!', {
+        description: 'Your comment has been added to the node.',
+      });
+    } else {
+      // Create new node
+      const newNode: KindnessNodeData = {
+        user: kindness.user,
+        message: kindness.message,
+        linkedTo: kindness.linkedTo,
+        id: `node-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        comments: [],
+      };
+
+      setNodes((prev) => [...prev, newNode]);
+
+      toast.success('Kindness added to the grid!', {
+        description: 'Your act of kindness is now inspiring others.',
+      });
+    }
+
     setShowForm(false);
     setSelectedNode(null);
-
-    toast.success('Kindness added to the grid!', {
-      description: 'Your act of kindness is now inspiring others.',
-    });
   };
 
   const handleNodeClick = (node: KindnessNodeData) => {
     setSelectedNode(node);
+    setShowNodeDetails(true);
+  };
+
+  const handleAddCommentClick = () => {
+    setShowNodeDetails(false);
     setShowForm(true);
-    toast.info(`Continue ${node.user}'s kindness chain!`, {
-      description: 'Click to add your own act of kindness.',
-    });
   };
 
   const handleStartKindness = () => {
@@ -101,6 +164,17 @@ const Index = () => {
 
         <KindnessGrid nodes={nodes} onNodeClick={handleNodeClick} />
       </div>
+
+      {showNodeDetails && selectedNode && (
+        <NodeDetailsModal
+          node={selectedNode}
+          onClose={() => {
+            setShowNodeDetails(false);
+            setSelectedNode(null);
+          }}
+          onAddComment={handleAddCommentClick}
+        />
+      )}
 
       {showForm && (
         <AddKindnessForm
