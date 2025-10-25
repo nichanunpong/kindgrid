@@ -1,0 +1,68 @@
+╔════════════════════════════════════════════════════════════════╗
+║          🕹️ KINDGRID - GITHUB PAGES QUICK DEPLOY 🕹️           ║
+╚════════════════════════════════════════════════════════════════╝
+
+📋 STEP 1: CREATE GITHUB REPOSITORY
+────────────────────────────────────
+1. Go to: https://github.com/new
+2. Repository name: KindGrid
+3. Make it Public or Private
+4. DON'T initialize with README
+5. Click "Create repository"
+
+
+⚙️ STEP 2: UPDATE CONFIG (IF NEEDED)
+────────────────────────────────────
+If your repo name is NOT "KindGrid", edit vite.config.ts line 9:
+  base: process.env.NODE_ENV === 'production' ? '/YOUR-REPO-NAME/' : '/',
+
+
+💻 STEP 3: RUN THESE COMMANDS
+────────────────────────────────────
+Open terminal in this folder and run:
+
+# Initialize git (if needed)
+git init
+
+# Add all files
+git add .
+
+# Commit
+git commit -m "Initial commit: Retro KindGrid app"
+
+# Add your GitHub repo (REPLACE with your username/repo!)
+git remote add origin https://github.com/YOUR-USERNAME/KindGrid.git
+
+# Push to GitHub
+git branch -M main
+git push -u origin main
+
+
+🌐 STEP 4: ENABLE GITHUB PAGES
+────────────────────────────────────
+1. Go to your repo → Settings → Pages
+2. Source: Select "GitHub Actions"
+3. Wait 2-3 minutes for deployment
+
+
+✅ YOUR SITE WILL BE LIVE AT:
+────────────────────────────────────
+https://YOUR-USERNAME.github.io/KindGrid/
+
+
+🔄 FUTURE UPDATES:
+────────────────────────────────────
+git add .
+git commit -m "Your update message"
+git push
+
+(It will auto-deploy in ~2 minutes!)
+
+
+📖 DETAILED GUIDE: See DEPLOYMENT.md
+
+
+════════════════════════════════════════════════════════════════
+                    MADE WITH ❤️ IN THE 80s
+════════════════════════════════════════════════════════════════
+
