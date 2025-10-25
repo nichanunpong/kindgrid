@@ -5,8 +5,8 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   // Set base path for GitHub Pages
-  // Change 'KindGrid' to your actual repository name
-  base: process.env.NODE_ENV === 'production' ? '/KindGrid/' : '/',
+  // Repository name: kindgrid (must match your GitHub repo name exactly)
+  base: process.env.NODE_ENV === 'production' ? '/kindgrid/' : '/',
 
   server: {
     host: '::',
