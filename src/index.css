@@ -1,0 +1,449 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   🕹️ RETRO 80s DESIGN SYSTEM 🕹️
+   Neon colors, CRT effects, pixel fonts
+   ======================================== */
+
+@layer base {
+  :root {
+    /* 80s Neon Colors */
+    --background: 280 100% 5%;
+    --foreground: 300 100% 95%;
+
+    --card: 280 80% 10%;
+    --card-foreground: 300 100% 95%;
+
+    --popover: 280 80% 10%;
+    --popover-foreground: 300 100% 95%;
+
+    --primary: 320 100% 60%; /* Hot Pink/Magenta */
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 180 100% 50%; /* Cyan */
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 280 50% 20%;
+    --muted-foreground: 300 100% 70%;
+
+    --accent: 90 100% 50%; /* Lime Green */
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 320 100% 60%;
+    --input: 280 50% 20%;
+    --ring: 320 100% 60%;
+
+    --radius: 0rem; /* Square corners for retro look */
+
+    /* Retro-specific colors */
+    --neon-pink: 320 100% 60%;
+    --neon-cyan: 180 100% 50%;
+    --neon-purple: 280 100% 60%;
+    --neon-lime: 90 100% 50%;
+    --neon-orange: 30 100% 50%;
+    --neon-blue: 220 100% 60%;
+
+    /* Kindness-specific retro colors */
+    --kindness-coral: 320 100% 60%;
+    --kindness-orange: 30 100% 50%;
+    --kindness-purple: 280 100% 60%;
+    --kindness-blue: 220 100% 60%;
+    --kindness-teal: 180 100% 50%;
+    --kindness-gold: 50 100% 50%;
+
+    /* Retro Gradients */
+    --gradient-warmth: linear-gradient(
+      135deg,
+      hsl(320 100% 60%),
+      hsl(280 100% 60%),
+      hsl(220 100% 60%)
+    );
+    --gradient-neon: linear-gradient(
+      135deg,
+      hsl(320 100% 60%),
+      hsl(180 100% 50%)
+    );
+    --gradient-background: linear-gradient(
+      to bottom,
+      hsl(280 100% 5%),
+      hsl(280 80% 8%),
+      hsl(280 100% 5%)
+    );
+
+    /* Retro Shadows */
+    --shadow-neon-pink: 0 0 20px hsl(320 100% 60% / 0.8),
+      0 0 40px hsl(320 100% 60% / 0.5);
+    --shadow-neon-cyan: 0 0 20px hsl(180 100% 50% / 0.8),
+      0 0 40px hsl(180 100% 50% / 0.5);
+    --shadow-neon-lime: 0 0 20px hsl(90 100% 50% / 0.8),
+      0 0 40px hsl(90 100% 50% / 0.5);
+    --shadow-pixel: 4px 4px 0px hsl(320 100% 60%);
+
+    /* Animations */
+    --transition-retro: all 0.1s steps(3);
+    --transition-smooth: all 0.3s ease;
+
+    --sidebar-background: 280 80% 10%;
+    --sidebar-foreground: 300 100% 95%;
+    --sidebar-primary: 320 100% 60%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 180 100% 50%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 320 100% 60%;
+    --sidebar-ring: 320 100% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background: var(--gradient-background);
+    min-height: 100vh;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* CRT Screen Effect */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    animation: scanlines 8s linear infinite;
+  }
+
+  /* CRT Flicker */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(18, 16, 16, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998;
+    animation: flicker 0.15s infinite;
+  }
+
+  /* Retro Typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+  }
+
+  .orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  /* Override for smaller screens */
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      line-height: 1.8;
+    }
+
+    h2 {
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+  }
+}
+
+@layer utilities {
+  /* Neon Glow Effects */
+  .neon-pink {
+    color: hsl(var(--neon-pink));
+    text-shadow: var(--shadow-neon-pink);
+  }
+
+  .neon-cyan {
+    color: hsl(var(--neon-cyan));
+    text-shadow: var(--shadow-neon-cyan);
+  }
+
+  .neon-lime {
+    color: hsl(var(--neon-lime));
+    text-shadow: var(--shadow-neon-lime);
+  }
+
+  .neon-border-pink {
+    border: 2px solid hsl(var(--neon-pink));
+    box-shadow: var(--shadow-neon-pink), inset var(--shadow-neon-pink);
+  }
+
+  .neon-border-cyan {
+    border: 2px solid hsl(var(--neon-cyan));
+    box-shadow: var(--shadow-neon-cyan), inset var(--shadow-neon-cyan);
+  }
+
+  .text-gradient-retro {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--neon-pink)),
+      hsl(var(--neon-cyan)),
+      hsl(var(--neon-lime))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 3s ease infinite;
+    background-size: 200% 100%;
+  }
+
+  /* Pixel/Retro Box */
+  .retro-box {
+    background: hsl(var(--card));
+    border: 3px solid hsl(var(--neon-pink));
+    box-shadow: var(--shadow-neon-pink);
+    position: relative;
+  }
+
+  .retro-box::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--neon-pink)),
+      hsl(var(--neon-cyan))
+    );
+    z-index: -1;
+    opacity: 0.3;
+    filter: blur(10px);
+  }
+
+  /* DOS-style text */
+  .dos-text {
+    font-family: 'VT323', monospace;
+    color: hsl(var(--neon-lime));
+    text-shadow: 0 0 10px hsl(var(--neon-lime));
+  }
+
+  /* Grid Background */
+  .grid-bg {
+    background-image: linear-gradient(
+        rgba(255, 0, 255, 0.1) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Animations */
+  @keyframes scanlines {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(10px);
+    }
+  }
+
+  @keyframes flicker {
+    0% {
+      opacity: 0.27861;
+    }
+    5% {
+      opacity: 0.34769;
+    }
+    10% {
+      opacity: 0.23604;
+    }
+    15% {
+      opacity: 0.90626;
+    }
+    20% {
+      opacity: 0.18128;
+    }
+    25% {
+      opacity: 0.83891;
+    }
+    30% {
+      opacity: 0.65583;
+    }
+    35% {
+      opacity: 0.67807;
+    }
+    40% {
+      opacity: 0.26559;
+    }
+    45% {
+      opacity: 0.84693;
+    }
+    50% {
+      opacity: 0.96019;
+    }
+    55% {
+      opacity: 0.08594;
+    }
+    60% {
+      opacity: 0.20313;
+    }
+    65% {
+      opacity: 0.71988;
+    }
+    70% {
+      opacity: 0.53455;
+    }
+    75% {
+      opacity: 0.37288;
+    }
+    80% {
+      opacity: 0.71428;
+    }
+    85% {
+      opacity: 0.70419;
+    }
+    90% {
+      opacity: 0.7003;
+    }
+    95% {
+      opacity: 0.36108;
+    }
+    100% {
+      opacity: 0.24387;
+    }
+  }
+
+  @keyframes neon-pulse {
+    0%,
+    100% {
+      text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff,
+        0 0 40px hsl(var(--neon-pink)), 0 0 80px hsl(var(--neon-pink)),
+        0 0 90px hsl(var(--neon-pink)), 0 0 100px hsl(var(--neon-pink)),
+        0 0 150px hsl(var(--neon-pink));
+    }
+    50% {
+      text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff,
+        0 0 20px hsl(var(--neon-pink)), 0 0 40px hsl(var(--neon-pink)),
+        0 0 45px hsl(var(--neon-pink)), 0 0 50px hsl(var(--neon-pink)),
+        0 0 75px hsl(var(--neon-pink));
+    }
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes float-retro {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-15px) rotate(2deg);
+    }
+  }
+
+  @keyframes blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes glitch {
+    0% {
+      transform: translate(0);
+    }
+    20% {
+      transform: translate(-2px, 2px);
+    }
+    40% {
+      transform: translate(-2px, -2px);
+    }
+    60% {
+      transform: translate(2px, 2px);
+    }
+    80% {
+      transform: translate(2px, -2px);
+    }
+    100% {
+      transform: translate(0);
+    }
+  }
+
+  .animate-neon-pulse {
+    animation: neon-pulse 1.5s ease-in-out infinite;
+  }
+
+  .animate-float-retro {
+    animation: float-retro 3s ease-in-out infinite;
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  .animate-glitch {
+    animation: glitch 0.3s ease-in-out infinite;
+  }
+
+  /* Pixel perfect utilities */
+  .pixel-corners {
+    clip-path: polygon(
+      0 4px,
+      4px 4px,
+      4px 0,
+      calc(100% - 4px) 0,
+      calc(100% - 4px) 4px,
+      100% 4px,
+      100% calc(100% - 4px),
+      calc(100% - 4px) calc(100% - 4px),
+      calc(100% - 4px) 100%,
+      4px 100%,
+      4px calc(100% - 4px),
+      0 calc(100% - 4px)
+    );
+  }
+}
